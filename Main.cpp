@@ -53,7 +53,7 @@ void addDish(){
         }
     }
     pushDish(tempName, tempPrice, tempQty);
-    ctrOrder++;
+    ctrDish++;
     puts("The dish has been added");
     printf("Press enter to continue...");
     getchar();
@@ -79,16 +79,38 @@ void removeDish(){
         printf("Insert dish's name to be deleted: ");
         scanf("%s", tempDish);
         currDish = headDish;
-        while(currDish && strcmp(currDish->name, tempDish) != 0){
+        int flag = 0;
+        while(currDish){
+            if(strcmp(currDish->name, tempDish) == 0){
+                flag = 1;
+                break;
+            }
+            // printf("Hello\n");
             currDish = currDish->next;
         }
-        if(currDish == NULL){
+        if(flag == 0){
             continue;
         }
-        currDish->prev->next = currDish->next;
-        currDish->next->prev = currDish->prev;
-        currDish->prev = currDish->next = NULL;
-        free(currDish);
+
+        //printf("Here\n");
+        if(strcmp(headDish->name, tailDish->name) == 0){
+            headDish = tailDish = NULL;
+            free(headDish);
+            break;
+        }
+        else if(strcmp(headDish->name, currDish->name) == 0){
+            Dish *temp = headDish->next;
+            headDish->next = temp->prev = NULL;
+            free(headDish);
+            headDish = temp;
+            break;
+        }
+        else{
+            currDish->prev->next = currDish->next;
+            currDish->next->prev = currDish->prev;
+            currDish->prev = currDish->next = NULL;
+            break;
+        }
 
     }
     getchar();getchar();
@@ -221,7 +243,7 @@ void order(){
     while(1){
         printf("Insert the amount of dish: ");
         scanf("%d", &tempQty);
-        if(tempQty >= 1 && tempQty <= ctrOrder){
+        if(tempQty >= 1 && tempQty <= ctrDish){
             break;
         }
     }
@@ -360,7 +382,6 @@ void exit(){
     }
     fclose(fp);
     return;
-
 
 }
 

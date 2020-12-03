@@ -3,7 +3,7 @@
 #include <string.h>
 #include <cstdio>
 
-int ctrOrder = 0;
+int ctrDish = 0;
 
 const int MAX_ELEMENT = 26;
 
